@@ -1,13 +1,33 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
+	"log"
+
+	"sqlboiler-project/models"
 
 	_ "github.com/lib/pq"
-	// SQLBoilerで生成されたモデルをインポート
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 func main() {
-	// ここにメインのロジックを書きます
-	fmt.Println("Hello, SQLBoiler!")
+	db, err := sql.Open("postgres", "host=localhost port=5432 user=user password=password dbname=sqlboiler_db sslmode=disable")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	book := models.Book{
+		Title:  "Sample Book",
+		Author: "John Doe",
+	}
+
+	err = book.Insert(context.Background(), db, boil.Infer())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Book inserted successfully")
 }
