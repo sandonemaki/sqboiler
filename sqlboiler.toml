@@ -5,4 +5,4 @@
   user   = "user"
   pass   = "password"
   sslmode = "disable"
-  blacklist = ["migrations", "other_migrations"]
+  blacklist = ["migrations", "schema_migrations"]

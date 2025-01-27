@@ -13,69 +13,141 @@ import "testing"
 // Separating the tests thusly grants avoidance of Postgres deadlocks.
 func TestParent(t *testing.T) {
 	t.Run("Books", testBooks)
+	t.Run("Movies", testMovies)
+	t.Run("SchemaMigrations", testSchemaMigrations)
+	t.Run("UserFavoriteMovies", testUserFavoriteMovies)
+	t.Run("Users", testUsers)
 }
 
 func TestDelete(t *testing.T) {
 	t.Run("Books", testBooksDelete)
+	t.Run("Movies", testMoviesDelete)
+	t.Run("SchemaMigrations", testSchemaMigrationsDelete)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesDelete)
+	t.Run("Users", testUsersDelete)
 }
 
 func TestQueryDeleteAll(t *testing.T) {
 	t.Run("Books", testBooksQueryDeleteAll)
+	t.Run("Movies", testMoviesQueryDeleteAll)
+	t.Run("SchemaMigrations", testSchemaMigrationsQueryDeleteAll)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesQueryDeleteAll)
+	t.Run("Users", testUsersQueryDeleteAll)
 }
 
 func TestSliceDeleteAll(t *testing.T) {
 	t.Run("Books", testBooksSliceDeleteAll)
+	t.Run("Movies", testMoviesSliceDeleteAll)
+	t.Run("SchemaMigrations", testSchemaMigrationsSliceDeleteAll)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesSliceDeleteAll)
+	t.Run("Users", testUsersSliceDeleteAll)
 }
 
 func TestExists(t *testing.T) {
 	t.Run("Books", testBooksExists)
+	t.Run("Movies", testMoviesExists)
+	t.Run("SchemaMigrations", testSchemaMigrationsExists)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesExists)
+	t.Run("Users", testUsersExists)
 }
 
 func TestFind(t *testing.T) {
 	t.Run("Books", testBooksFind)
+	t.Run("Movies", testMoviesFind)
+	t.Run("SchemaMigrations", testSchemaMigrationsFind)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesFind)
+	t.Run("Users", testUsersFind)
 }
 
 func TestBind(t *testing.T) {
 	t.Run("Books", testBooksBind)
+	t.Run("Movies", testMoviesBind)
+	t.Run("SchemaMigrations", testSchemaMigrationsBind)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesBind)
+	t.Run("Users", testUsersBind)
 }
 
 func TestOne(t *testing.T) {
 	t.Run("Books", testBooksOne)
+	t.Run("Movies", testMoviesOne)
+	t.Run("SchemaMigrations", testSchemaMigrationsOne)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesOne)
+	t.Run("Users", testUsersOne)
 }
 
 func TestAll(t *testing.T) {
 	t.Run("Books", testBooksAll)
+	t.Run("Movies", testMoviesAll)
+	t.Run("SchemaMigrations", testSchemaMigrationsAll)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesAll)
+	t.Run("Users", testUsersAll)
 }
 
 func TestCount(t *testing.T) {
 	t.Run("Books", testBooksCount)
+	t.Run("Movies", testMoviesCount)
+	t.Run("SchemaMigrations", testSchemaMigrationsCount)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesCount)
+	t.Run("Users", testUsersCount)
 }
 
 func TestHooks(t *testing.T) {
 	t.Run("Books", testBooksHooks)
+	t.Run("Movies", testMoviesHooks)
+	t.Run("SchemaMigrations", testSchemaMigrationsHooks)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesHooks)
+	t.Run("Users", testUsersHooks)
 }
 
 func TestInsert(t *testing.T) {
 	t.Run("Books", testBooksInsert)
 	t.Run("Books", testBooksInsertWhitelist)
+	t.Run("Movies", testMoviesInsert)
+	t.Run("Movies", testMoviesInsertWhitelist)
+	t.Run("SchemaMigrations", testSchemaMigrationsInsert)
+	t.Run("SchemaMigrations", testSchemaMigrationsInsertWhitelist)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesInsert)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesInsertWhitelist)
+	t.Run("Users", testUsersInsert)
+	t.Run("Users", testUsersInsertWhitelist)
 }
 
 func TestReload(t *testing.T) {
 	t.Run("Books", testBooksReload)
+	t.Run("Movies", testMoviesReload)
+	t.Run("SchemaMigrations", testSchemaMigrationsReload)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesReload)
+	t.Run("Users", testUsersReload)
 }
 
 func TestReloadAll(t *testing.T) {
 	t.Run("Books", testBooksReloadAll)
+	t.Run("Movies", testMoviesReloadAll)
+	t.Run("SchemaMigrations", testSchemaMigrationsReloadAll)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesReloadAll)
+	t.Run("Users", testUsersReloadAll)
 }
 
 func TestSelect(t *testing.T) {
 	t.Run("Books", testBooksSelect)
+	t.Run("Movies", testMoviesSelect)
+	t.Run("SchemaMigrations", testSchemaMigrationsSelect)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesSelect)
+	t.Run("Users", testUsersSelect)
 }
 
 func TestUpdate(t *testing.T) {
 	t.Run("Books", testBooksUpdate)
+	t.Run("Movies", testMoviesUpdate)
+	t.Run("SchemaMigrations", testSchemaMigrationsUpdate)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesUpdate)
+	t.Run("Users", testUsersUpdate)
 }
 
 func TestSliceUpdateAll(t *testing.T) {
 	t.Run("Books", testBooksSliceUpdateAll)
+	t.Run("Movies", testMoviesSliceUpdateAll)
+	t.Run("SchemaMigrations", testSchemaMigrationsSliceUpdateAll)
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesSliceUpdateAll)
+	t.Run("Users", testUsersSliceUpdateAll)
 }

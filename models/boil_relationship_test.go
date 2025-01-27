@@ -7,7 +7,10 @@ import "testing"
 
 // TestToOne tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToOne(t *testing.T) {}
+func TestToOne(t *testing.T) {
+	t.Run("UserFavoriteMovieToMovieUsingMovie", testUserFavoriteMovieToOneMovieUsingMovie)
+	t.Run("UserFavoriteMovieToUserUsingUser", testUserFavoriteMovieToOneUserUsingUser)
+}
 
 // TestOneToOne tests cannot be run in parallel
 // or deadlocks can occur.
@@ -15,11 +18,17 @@ func TestOneToOne(t *testing.T) {}
 
 // TestToMany tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToMany(t *testing.T) {}
+func TestToMany(t *testing.T) {
+	t.Run("MovieToUserFavoriteMovies", testMovieToManyUserFavoriteMovies)
+	t.Run("UserToUserFavoriteMovies", testUserToManyUserFavoriteMovies)
+}
 
 // TestToOneSet tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToOneSet(t *testing.T) {}
+func TestToOneSet(t *testing.T) {
+	t.Run("UserFavoriteMovieToMovieUsingUserFavoriteMovies", testUserFavoriteMovieToOneSetOpMovieUsingMovie)
+	t.Run("UserFavoriteMovieToUserUsingUserFavoriteMovies", testUserFavoriteMovieToOneSetOpUserUsingUser)
+}
 
 // TestToOneRemove tests cannot be run in parallel
 // or deadlocks can occur.
@@ -35,7 +44,10 @@ func TestOneToOneRemove(t *testing.T) {}
 
 // TestToManyAdd tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToManyAdd(t *testing.T) {}
+func TestToManyAdd(t *testing.T) {
+	t.Run("MovieToUserFavoriteMovies", testMovieToManyAddOpUserFavoriteMovies)
+	t.Run("UserToUserFavoriteMovies", testUserToManyAddOpUserFavoriteMovies)
+}
 
 // TestToManySet tests cannot be run in parallel
 // or deadlocks can occur.

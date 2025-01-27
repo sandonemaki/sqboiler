@@ -27,7 +27,8 @@ type Book struct {
 	ID            int       `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Title         string    `boil:"title" json:"title" toml:"title" yaml:"title"`
 	Author        string    `boil:"author" json:"author" toml:"author" yaml:"author"`
-	PublishedDate null.Time `boil:"published_date" json:"published_date,omitempty" toml:"published_date" yaml:"published_date,omitempty"`
+	PublishedYear null.Int  `boil:"published_year" json:"published_year,omitempty" toml:"published_year" yaml:"published_year,omitempty"`
+	CreatedAt     null.Time `boil:"created_at" json:"created_at,omitempty" toml:"created_at" yaml:"created_at,omitempty"`
 
 	R *bookR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L bookL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -37,24 +38,28 @@ var BookColumns = struct {
 	ID            string
 	Title         string
 	Author        string
-	PublishedDate string
+	PublishedYear string
+	CreatedAt     string
 }{
 	ID:            "id",
 	Title:         "title",
 	Author:        "author",
-	PublishedDate: "published_date",
+	PublishedYear: "published_year",
+	CreatedAt:     "created_at",
 }
 
 var BookTableColumns = struct {
 	ID            string
 	Title         string
 	Author        string
-	PublishedDate string
+	PublishedYear string
+	CreatedAt     string
 }{
 	ID:            "books.id",
 	Title:         "books.title",
 	Author:        "books.author",
-	PublishedDate: "books.published_date",
+	PublishedYear: "books.published_year",
+	CreatedAt:     "books.created_at",
 }
 
 // Generated where
@@ -109,6 +114,44 @@ func (w whereHelperstring) NIN(slice []string) qm.QueryMod {
 	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
 }
 
+type whereHelpernull_Int struct{ field string }
+
+func (w whereHelpernull_Int) EQ(x null.Int) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, false, x)
+}
+func (w whereHelpernull_Int) NEQ(x null.Int) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, true, x)
+}
+func (w whereHelpernull_Int) LT(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpernull_Int) LTE(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpernull_Int) GT(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpernull_Int) GTE(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
+func (w whereHelpernull_Int) IN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
+func (w whereHelpernull_Int) NIN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
+}
+
+func (w whereHelpernull_Int) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_Int) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+
 type whereHelpernull_Time struct{ field string }
 
 func (w whereHelpernull_Time) EQ(x null.Time) qm.QueryMod {
@@ -137,12 +180,14 @@ var BookWhere = struct {
 	ID            whereHelperint
 	Title         whereHelperstring
 	Author        whereHelperstring
-	PublishedDate whereHelpernull_Time
+	PublishedYear whereHelpernull_Int
+	CreatedAt     whereHelpernull_Time
 }{
 	ID:            whereHelperint{field: "\"books\".\"id\""},
 	Title:         whereHelperstring{field: "\"books\".\"title\""},
 	Author:        whereHelperstring{field: "\"books\".\"author\""},
-	PublishedDate: whereHelpernull_Time{field: "\"books\".\"published_date\""},
+	PublishedYear: whereHelpernull_Int{field: "\"books\".\"published_year\""},
+	CreatedAt:     whereHelpernull_Time{field: "\"books\".\"created_at\""},
 }
 
 // BookRels is where relationship names are stored.
@@ -162,9 +207,9 @@ func (*bookR) NewStruct() *bookR {
 type bookL struct{}
 
 var (
-	bookAllColumns            = []string{"id", "title", "author", "published_date"}
+	bookAllColumns            = []string{"id", "title", "author", "published_year", "created_at"}
 	bookColumnsWithoutDefault = []string{"title", "author"}
-	bookColumnsWithDefault    = []string{"id", "published_date"}
+	bookColumnsWithDefault    = []string{"id", "published_year", "created_at"}
 	bookPrimaryKeyColumns     = []string{"id"}
 	bookGeneratedColumns      = []string{}
 )
@@ -523,6 +568,13 @@ func (o *Book) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 	}
 
 	var err error
+	if !boil.TimestampsAreSkipped(ctx) {
+		currTime := time.Now().In(boil.GetLocation())
+
+		if queries.MustTime(o.CreatedAt).IsZero() {
+			queries.SetScanner(&o.CreatedAt, currTime)
+		}
+	}
 
 	if err := o.doBeforeInsertHooks(ctx, exec); err != nil {
 		return err
@@ -727,6 +779,13 @@ func (o BookSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, col
 func (o *Book) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns, opts ...UpsertOptionFunc) error {
 	if o == nil {
 		return errors.New("models: no books provided for upsert")
+	}
+	if !boil.TimestampsAreSkipped(ctx) {
+		currTime := time.Now().In(boil.GetLocation())
+
+		if queries.MustTime(o.CreatedAt).IsZero() {
+			queries.SetScanner(&o.CreatedAt, currTime)
+		}
 	}
 
 	if err := o.doBeforeUpsertHooks(ctx, exec); err != nil {

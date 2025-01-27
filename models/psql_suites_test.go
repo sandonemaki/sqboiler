@@ -7,4 +7,12 @@ import "testing"
 
 func TestUpsert(t *testing.T) {
 	t.Run("Books", testBooksUpsert)
+
+	t.Run("Movies", testMoviesUpsert)
+
+	t.Run("SchemaMigrations", testSchemaMigrationsUpsert)
+
+	t.Run("UserFavoriteMovies", testUserFavoriteMoviesUpsert)
+
+	t.Run("Users", testUsersUpsert)
 }

@@ -4,7 +4,15 @@
 package models
 
 var TableNames = struct {
-	Books string
+	Books              string
+	Movies             string
+	SchemaMigrations   string
+	UserFavoriteMovies string
+	Users              string
 }{
-	Books: "books",
+	Books:              "books",
+	Movies:             "movies",
+	SchemaMigrations:   "schema_migrations",
+	UserFavoriteMovies: "user_favorite_movies",
+	Users:              "users",
 }
